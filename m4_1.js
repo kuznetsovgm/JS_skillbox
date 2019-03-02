@@ -66,5 +66,7 @@ function getFullDateRus (date) {
 
 setInterval(function() {
 	date = new Date();
-	console.log(getFullDateRus(date));
+	var d = getFullDateRus(date);
+	console.log(d);
+	document.getElementById("fullDate").innerText = d;
 }, 1000);
