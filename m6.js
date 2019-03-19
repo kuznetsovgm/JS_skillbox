@@ -45,8 +45,8 @@ function User (firstName, secondName) {
 					+ appendZero(date.getMinutes()) + ':'
 					+ appendZero(date.getSeconds());
 
-	this.firstName = firstName;
-	this.secondName = secondName;
+	this.firstName = firstName.charAt(0).toUpperCase() + firstName.substring(1);
+	this.secondName = secondName.charAt(0).toUpperCase() + secondName.substring(1);
 
 	this.getFullName = function () {
 		return this.firstName + ' ' + this.secondName;
@@ -57,6 +57,12 @@ function UserList () {
 	this.users = [];
 
 	this.add = function (user) {
+		for (var i = this.users.length - 1; i >= 0; i--) {
+			if (this.users[i].secondName === user.secondName && this.users[i].firstName === user.firstName) {
+				console.log("Пользователь с такими именем и фамилией уже зарегестрирован.")
+				return false;
+			}
+		}
 		this.users.push(user);
 	}
 	this.getAllUsers = function (user) {
@@ -71,7 +77,7 @@ var userList = new UserList();
 do {
 	var str = prompt('Введите Ваши имя и фамилию через пробел:');
 	if (str != null && str != undefined) {
-		var arr = str.split(' ', 2);
+		var arr = str.trim().replace(/\s{2,}/g, ' ').replace(/[^a-zа-я\s]/ig, '').split(/ /g);
 		if (arr[1] != undefined && arr[1] != '') {
 			var user = new User(arr[0], arr[1]);
 			userList.add(user);
