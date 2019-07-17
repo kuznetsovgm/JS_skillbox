@@ -22,7 +22,7 @@ function getSums(arr = []) {
 }
 
 /*
-Написать функцию - аналог [].reduce()
+Написать функцию - аналог Array.reduce()
 */
 function reduse(arr = [], f, init = arr[0]) {
 	if(!arr.length) return null;
