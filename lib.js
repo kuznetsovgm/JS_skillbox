@@ -98,7 +98,7 @@
 			if (answer !== null) {
 				answer = prompt(getPromptText(answer, x(), (n - 1)));
 			}
-		} while (answer !== null)
+		} while (answer !== null);
 
 	}
 })();
