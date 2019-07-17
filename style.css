@@ -1,0 +1,103 @@
+.task {
+	list-style: none;
+	list-style-position: inside;
+}
+.task-title:before {
+	content: counter(li);
+	counter-increment: li;
+	padding-left: 25px;
+	font-size: 2rem;
+}
+.custom-control-label:before, .custom-control-label:after {
+	top: 16px;
+    left: 10px;
+    width: 25px;
+    height: 25px;
+}
+.custom-control-label:focus:before, .custom-control-label:focus:after {
+	outline: none !important;
+}
+.close {
+	height: 90%;
+    margin-right: 8px;
+    font-size: 2.5rem;
+}
+.close:hover {
+	opacity: 1 !important
+}
+.close, .close:focus, .close:hover {
+	color: red;
+}
+.close:focus, .close:active {
+	opacity: .5;
+	outline: none;
+}
+.task-title {
+    background-color: #B3E5FC;
+    border-radius: 3px;
+	font-size: 16px;
+	display: block;
+	height: 55px;
+	padding: 5px 5px 5px 23px;
+    padding: 5px 5px 5px 23px;
+    box-shadow: 0px 8px 10px -10px #404040;
+}
+.task-list {
+	padding-left: 0;
+	counter-reset: li;
+}
+.completed {
+	text-decoration: line-through;
+}
+.task-text {
+	display: block;
+	/*margin-top: -5px;*/
+	padding: 10px 5px;
+	border: 1px solid #000;
+	border-top: none;
+	border-bottom-right-radius: 5px;
+	border-bottom-left-radius: 5px;
+	background-color: #d6f2ff;
+	box-sizing: border-box;
+}
+.new-task-container {
+	position: relative;
+	padding-left: 0;
+}
+.new-task {
+	max-width: 500px;
+	background-color: white;
+	height: 750px;
+	box-shadow: 5px 5px 20px 0px black;
+	border-bottom-right-radius: 60% 40%;
+}
+.substrate1 {
+	max-width: 500px;
+    box-shadow: 5px 5px 20px 0px black;
+    border-bottom-right-radius: 60% 40%;
+    position: absolute;
+    bottom: -30px;
+    background-color: lightgray;
+    height: 750px;
+    width: 90%;
+    z-index: -2;
+}
+.substrate2	 {
+	max-width: 500px;
+	box-shadow: 5px 5px 20px 0px black;
+    border-bottom-right-radius: 60% 40%;
+    position: absolute;
+    bottom: -60px;
+    background-color: gray;
+    height: 750px;
+    width: 79%;
+    z-index: -3;
+}
+@media (max-width: 767px) {
+	/*.new-task {
+		height: 40vh;
+	}*/
+}
+.new-task-tilte {
+
+}
