@@ -1,11 +1,5 @@
- <!-- 
-добавить .collapse
-
- -->
-
-
 <!DOCTYPE html>
-<html>
+<html lang="ru">
 <head>
 	<title></title>
 	<meta charset="utf-8">
@@ -17,21 +11,34 @@
 <body>
 	<div class="main-container container-fluid">
 		<div class="row">
-			<div class="new-task-container col-xs-12 col-md-6 mb-5">
-				<div class="new-task">
-					<div><input calass="" id="new-task-title" type="text" name=""></div>
-					<div><textarea class="" id="new-task-text"></textarea></div>
-					<button class="btn btn-primary" id="btnAddNewTask">+</button>
+
+			<div class="col-xs-12 col-sm-6 col-lg-4 p-0 pr-sm-4">
+				<div class="new-task-container">
+					<div class="new-task">
+						<div class="new-task-title">
+							<h4>Заголовок задачи</h4>
+							<input id="new-task-title" type="text" name="">
+						</div>
+						<div class="new-task-text">
+							<h4>Текст задачи</h4>
+							<textarea id="new-task-text"></textarea>
+						</div>
+						<div class="add-new-task">
+							<button class="btn btn-primary btnAddNewTask" id="btnAddNewTask">Добавить</button>
+						</div>
+						<div class="substrate1 new-task substrate"></div>
+						<div class="substrate2 new-task substrate"></div>
+					</div>
 				</div>
-				<div class="substrate1"></div>
-				<div class="substrate2"></div>
 			</div>
 
 
-			<div class="task-list-container col-xs-12 col-md-6">
-				<ol class="task-list" id="task-list">
-					
-				</ol>
+			<div class="task-list-container col-xs-12 col-sm-6 col-lg-8 pl-sm-4">
+				<div class="row">
+					<ol class="task-list" id="task-list">
+						
+					</ol>
+				</div>
 			</div>
 
 		</div>

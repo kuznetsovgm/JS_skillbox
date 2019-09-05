@@ -33,7 +33,7 @@ function reduse(arr = [], f, init = arr[0]) {
 	}
 	for(i; i < arr.length; i++) {
 		res = f(res, arr[i], i, arr);
-		console.log(i);
+		// console.log(i);
     }
 	return res;
 }
