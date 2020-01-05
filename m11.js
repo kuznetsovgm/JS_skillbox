@@ -10,6 +10,13 @@ class Translator {
 		return this.key;
 	};
 
+	/**
+	 * Функция выполняет запрос к API яндекс переводчика для получения списка доступных для перевода языков.
+	 * @param  {string} строка, в которой указываем, на каком языке получим список языков,
+	 * например, для 'ru' получим список языков на русском.
+	 * @return {Promise} с объектов со списком языков ({'ru': 'Русский',}). 
+	 *
+	 */
 	getAvailableLangs(lang = 'ru') {
 		let url = 'https://translate.yandex.net/api/v1.5/tr.json/getLangs?key=' + this.getKey() + '&ui=' + lang;
 		return window.fetch(url)
@@ -17,8 +24,18 @@ class Translator {
 			.then(res => res.langs);
 	};
 
+	/**
+	 * Функция выполняет запрос к API яндекс переводчика для получения перевода.
+	 * @param1  {string} строка, с текстом, который надо перевести,
+	 * @param2  {string} строка, в которой указываем направление перевода
+	 * 	в виде 'ru-en' или, для автоматического определения языка просто 'en'
+	 * 
+	 * @return {Promise} с объектом с переводом. 
+	 *
+	 */
 	getTranslateText(text, lang) {
 		let url = `https://translate.yandex.net/api/v1.5/tr.json/translate`;
+		text = encodeURIComponent(text);
 		let promise = window.fetch(url, {
 				method: 'POST',
 				headers: {
@@ -31,7 +48,15 @@ class Translator {
 		return promise;
 	};
 
+	/**
+	 * Функция выполняет запрос к API яндекс переводчика для определения языка.
+	 * @param1  {string} строка, с текстом, язык которого надо определить,
+	 * 
+	 * @return {Promise} с объектом с предпологаемым языком. 
+	 *
+	 */
 	detectLang(text) {
+		text = encodeURIComponent(text);
 		let url = `https://translate.yandex.net/api/v1.5/tr.json/detect?key=${this.getKey()}&text=${text}`;
 		return window.fetch(url)
 			.then(response => response.status == 200 ? response.json() : null)
@@ -46,6 +71,10 @@ class textEditor extends Translator {
 			this.id = obj.id;
 		};
 
+		/**
+		 * Создаем интерфейс и задаем обработчики событий
+		 *
+		 */
 		createElements = function(obj) {
 			this.container = document.createElement('div');
 			this.container.classList.add('textContainer');
@@ -80,6 +109,13 @@ class textEditor extends Translator {
 			return obj;
 		};
 
+
+		/**
+		 * Устанавливаем в селекты доступные для перевода языки
+		 * @param1  {Object} селект, в который устанавливаем значения,
+		 * @param2  {string} язык, который будет установлен "по умолчанию"
+		 *
+		 */
 		setSelect = function(select, lang = 'ru') {
 			select.innerHTML = '';
 			this.langs = this.getAvailableLangs().then(function(langs) {
@@ -104,6 +140,10 @@ class textEditor extends Translator {
 			return select;
 		};
 
+		/**
+		 * Обработчик события смены языка в селекте
+		 *
+		 */
 		setLangs = function(event) {
 			let changedLang = event.target.attributes.code.value;
 			let lang = event.target.selectedOptions[0].attributes['code'].value;
@@ -111,11 +151,15 @@ class textEditor extends Translator {
 			this.translateText();
 		}.bind(this);
 
+
+		/**
+		 * Обработчик события ввода текста для перевода
+		 *
+		 */
 		translateText = function(event) {
 			debugger;
 			let lang = this.langOne == 'auto' ? this.langTwo : this.langOne + '-' + this.langTwo;
-			let text = encodeURIComponent(this.textLangOne.value);
-			let a = this.getTranslateText(text, lang)
+			let a = this.getTranslateText(this.textLangOne.value, lang)
 				.then(function(text) {
 					this.textLangTwo.value = text[0];
 				}.bind(this));
