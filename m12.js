@@ -26,8 +26,9 @@ $(function() {
 	  				if (ballPosition > gateTop && ballPosition < gateBottom) {
 	  					$('.goal').fadeIn('fast', function() {
 	  						$(this).fadeOut(1200);
-	  						resetBall();
 	  					});
+	  					side ? scoreRight() : scoreLeft();
+  						resetBall();
 	  				}
 	  			},
 	  		}
@@ -83,9 +84,36 @@ $(function() {
 		});
 	};
 
+	function score(side) {
+		let score = 0;
+		let selector = side ? '.scoreRight' : '.scoreLeft';
+		return function() {
+			console.log(score);
+			$(selector).animate({
+				top: '4vw',
+				opacity: '0',
+			}, {
+				duration: 300,
+				complete: function() {
+					$(selector)
+					.html(++score)
+					.css({
+						top: '-4vw',
+					})
+					.animate({
+						top: 0,
+						opacity: 1,
+					}, 300)
+				}
+			})
+		};
+	};
+
 	// 0 - левая
 	// 1 - правая
 	var side = Math.round(Math.random());
+	let scoreLeft = score(0);
+	let scoreRight = score(1);
 	resetBall();
 
 });
