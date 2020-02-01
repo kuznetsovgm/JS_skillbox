@@ -1,13 +1,14 @@
 (function() {
 	"use strict";
 
-
 class Translator {
 	constructor(key) {
 		this.key = key;
 	};
 
-	getKey = () => this.key;
+	getKey() {
+		return this.key;
+	};
 
 	/**
 	 * Функция выполняет запрос к API яндекс переводчика для получения списка доступных для перевода языков.
@@ -17,7 +18,7 @@ class Translator {
 	 *
 	 */
 	getAvailableLangs(lang = 'ru') {
-		let url = `https://translate.yandex.net/api/v1.5/tr.json/getLangs?key=${this.getKey()}&ui=${lang}`;
+		let url = 'https://translate.yandex.net/api/v1.5/tr.json/getLangs?key=' + this.getKey() + '&ui=' + lang;
 		return window.fetch(url)
 			.then(response => response.json())
 			.then(res => res.langs);
@@ -143,12 +144,12 @@ class textEditor extends Translator {
 		 * Обработчик события смены языка в селекте
 		 *
 		 */
-		setLangs = (event) => {
+		setLangs = function(event) {
 			let changedLang = event.target.attributes.code.value;
 			let lang = event.target.selectedOptions[0].attributes['code'].value;
 			this[changedLang] = lang;
 			this.translateText();
-		};
+		}.bind(this);
 
 
 		/**
@@ -156,6 +157,7 @@ class textEditor extends Translator {
 		 *
 		 */
 		translateText = function(event) {
+			debugger;
 			let lang = this.langOne == 'auto' ? this.langTwo : this.langOne + '-' + this.langTwo;
 			let a = this.getTranslateText(this.textLangOne.value, lang)
 				.then(function(text) {
