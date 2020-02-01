@@ -29,8 +29,8 @@ class TasksList {
 		this.completedTasks.id = 'completedTasks';
 		this.container.appendChild(this.newTasks);
 		this.container.appendChild(this.completedTasks);
-		this.container.onclick = (event) => {
-			if(event.target.classList.contains('check')) {
+		this.container.onclick = function(event) {
+			if(/*event.target.classList.contains('title') || */event.target.classList.contains('check')) {
 				if (!this.list[event.target.id].isCompleted()) {
 					this.getTask(event.target.id).complete();
 					this.completedTasks.insertBefore(this.getTask(event.target.id).el, this.completedTasks.firstChild);
@@ -39,39 +39,26 @@ class TasksList {
 					this.newTasks.insertBefore(this.getTask(event.target.id).el, this.newTasks.firstChild);
 				}
 			}
-		};
+		}.bind(this);
+		// this.modal = this.createModal('Невыполненная задача с таким заголовком уже существует. Добавить ещё одну?');
+		// document.querySelector('body').appendChild(this.modal);
 	}
 
 	/**
 	 * проверка задачи на уникальность
 	 * @param  {[string]} title [Заголовок]
 	 * @param  {[string]} text  [Текст]
-	 * @return {[promise]}
+	 * @return {[int]}       [id задачи или false]
 	 */
-	addNewTask(title, text) {
+	checkUnic(title, text) {
 		let tasks = this.list;
-		let duplicate = false;
 		for (let i = 0; i < tasks.length; i++) {
+			// debugger;
 			if (title == tasks[i].title && tasks[i].status == _status[0]) {
-				duplicate = i;
-				break;
+				return i;
 			}
 		}
-		let p = new Promise((resolve, reject) => {
-			if (duplicate !== false) {
-				return this.createModal('Невыполненная задача с таким заголовком уже существует. Добавить ещё одну?')
-					.then(
-						result => {
-							resolve(this.createTask(title, text));
-						},
-						reject => false
-					);
-			} else {
-				resolve(this.createTask(title, text));
-				result => res;
-			}
-		});
-		return p;
+		return false;
 	}
 
 
@@ -80,10 +67,16 @@ class TasksList {
 	 * 
 	 * @param {string} заголовок
 	 * @param {string} текст
-	 * @return {[int]}
 	 */
-	createTask(title, text) {
+	add(title, text) {
 		var id = this.list.length;
+		let duplicate = this.checkUnic(title, text);
+		if (duplicate !== false) {
+			let res = confirm("Невыполненная задача с таким заголовком уже существует. Добавить ещё одну?");
+			if (!res) {
+				return false;
+			}
+		}
 		var task = new Task(title, text, id);
 		//добавляем задачу в массив
 		this.list.push(task);
@@ -95,48 +88,49 @@ class TasksList {
 		return this.list[index];
 	}
 
-	createModal(text) {
-		var modal = document.createElement('div');
-		modal.className = 'modal';
-		modal.style.backgroundColor = '#12141bb3';
-		var modalDialog = document.createElement('div');
-		modalDialog.className = 'modal-dialog modal-dialog-centered';
-		var modalContent = document.createElement('div');
-		modalContent.className = 'modal-content';
-		var modalBody = document.createElement('div');
-		modalBody.className = 'modal-body';
-		modalBody.innerHTML = text;
-		var modalFooter = document.createElement('div');
-		modalFooter.className = 'modal-footer';
-		var btnSave = document.createElement('button');
-		btnSave.className = 'btn btn-primary';
-		btnSave.innerHTML = 'Добавить';
-		var btnCancel = document.createElement('button');
-		btnCancel.className = 'btn btn-secondary';
-		btnCancel.innerHTML = 'Отмена';
+	// createModal(text) {
+	// 	var modal = document.createElement('div');
+	// 	modal.className = 'modal';
+	// 	modal.style.backgroundColor = '#12141bb3';
+	// 	var modalDialog = document.createElement('div');
+	// 	modalDialog.className = 'modal-dialog modal-dialog-centered';
+	// 	var modalContent = document.createElement('div');
+	// 	modalContent.className = 'modal-content';
+	// 	var modalBody = document.createElement('div');
+	// 	modalBody.className = 'modal-body';
+	// 	modalBody.innerText = text;
+	// 	var modalFooter = document.createElement('div');
+	// 	modalFooter.className = 'modal-footer';
+	// 	var btnSave = document.createElement('button');
+	// 	btnSave.className = 'btn btn-primary';
+	// 	btnSave.innerHTML = 'Добавить';
+	// 	var btnCancel = document.createElement('button');
+	// 	btnCancel.className = 'btn btn-secondary';
+	// 	btnCancel.innerHTML = 'Отмена';
 
-		modal.appendChild(modalDialog);
-		modalDialog.appendChild(modalContent);
-		modalContent.appendChild(modalBody);
-		modalContent.appendChild(modalFooter);
-		modalFooter.appendChild(btnCancel);
-		modalFooter.appendChild(btnSave);
+	// 	btnSave.onclick = function() {
+	// 		modal.style.display = 'none';
+	// 		return true;
+	// 	}
+	// 	btnCancel.onclick = function() {
+	// 		modal.style.display = 'none';
+	// 		return false;
+	// 	}
 
-		document.querySelector('body').appendChild(modal);
-		modal.style.display = 'block';	
+	// 	modal.appendChild(modalDialog);
+	// 	modalDialog.appendChild(modalContent);
+	// 	modalContent.appendChild(modalBody);
+	// 	modalContent.appendChild(modalFooter);
+	// 	modalFooter.appendChild(btnCancel);
+	// 	modalFooter.appendChild(btnSave);
 
-		let p = new Promise((resolve, reject) => {
-			btnSave.onclick = function() {
-				modal.remove();
-				resolve(true);
-			}
-			btnCancel.onclick = function() {
-				modal.remove();
-				reject(false);
-			}
-		})
-		return p;
-	}
+	// 	// document.querySelector('body').appendChild(modal);
+	// 	return modal;
+	// }
+
+	// showModal = function() {
+	// 	this.modal.style.display = 'block';
+	// }
 }
 
 var _status = ['new', 'completed'];
@@ -147,7 +141,7 @@ class Task {
 		this.text = text;
 		this.id = id;
 		this.status = _status[0];
-		this.el = this.createNewElement(this);
+		this.el = this.createNewElement(title, text, id);
 	}
 
 	complete() {
@@ -166,9 +160,7 @@ class Task {
 		return this.status == _status[1];
 	}
 
-
-// Добавил деструктуризацию
-	createNewElement({title, text, id}) {
+	createNewElement(title, text, id) {
 		var li = document.createElement("li");
 		li.className = "task col-xs-12 col-lg-6 float-left";
 
@@ -207,10 +199,11 @@ class Task {
 
 }
 
+
 var tasks = new TasksList(document.querySelector('#task-list'));
 var btnAddNewTask = document.querySelector('#btnAddNewTask');
 
-btnAddNewTask.onclick = () => {
+btnAddNewTask.onclick = function() {
 	var newTaskTitle = document.querySelector('#new-task-title');
 	var newTaskText = document.querySelector('#new-task-text');
 	if(newTaskTitle.value == '' || newTaskText.value == '') {
@@ -232,14 +225,14 @@ btnAddNewTask.onclick = () => {
 		}
 		return false;
 	}
-	tasks.addNewTask(newTaskTitle.value.trim(), newTaskText.value.trim())
-		.then(() => {	
-			newTaskTitle.value = newTaskText.value = '';
-		});
+	let res = tasks.add(newTaskTitle.value.trim(), newTaskText.value.trim());
+	if (res) {
+		newTaskTitle.value = newTaskText.value = '';
+	}
 }
 
-tasks.addNewTask('одиннадцатиклассница - делопроизводительница', 'Купила самогонный аппарат и пососала сушку.');
-tasks.addNewTask('Похвалить себя', 'Погладить себя по голове.');
-tasks.addNewTask('Добавить новую задачу', `Заполнить поле "Заголовок задачи", желательно 1 - 2 словами. В поле "Текст задачи" описать суть задачи более подробно.`); //попробовал backtick
-tasks.addNewTask('Выполнить первую задачу', 'Щелкнуть на заголовок, чтобы отметить задачу как выполненную.');
+tasks.add('одиннадцатиклассница - делопроизводительница', 'Купила самогонный аппарат и пососала сушку.');
+tasks.add('Похвалить себя', 'Погладить себя по голове.');
+tasks.add('Добавить новую задачу', "Заполнить поле \"Заголовок задачи\", желательно 1 - 2 словами. В поле \"Текст задачи\" описать суть задачи более подробно.");
+tasks.add('Выполнить первую задачу', 'Щелкнуть на заголовок, чтобы отметить задачу как выполненную.');
 })();
