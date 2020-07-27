@@ -1,4 +1,10 @@
 .football {
+	user-select: none;
+	-ms-user-select: none;
+	-webkit-user-select: none;
+	-moz-user-select: none;
+}
+.football {
     position: relative;
     margin-top: 20px; margin-bottom: 20px;
 }
@@ -17,4 +23,14 @@
     top: 25%;
     left: 23vw;
     font-size: 15vw;
+}
+.scoreLeft, .scoreRight {
+	position: absolute;
+	top: 0;
+	left: 1vw;
+	font-size: 6vw;	
+}
+.scoreRight {
+	left: unset;
+	right: 1vw;
 }
