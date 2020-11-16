@@ -47,9 +47,8 @@ export default class CommentStorage {
         const comment = this.getComment(commentId);
 
         const id = comment.reactions[reaction].findIndex(name => name === myName);
-        if (id > 0) {
+        if (id > -1) {
             comment.reactions[reaction].splice(id, 1);
-            console.log(comment);
             this.save();
         }
 
