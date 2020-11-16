@@ -25,10 +25,10 @@ export default function App(props) {
         setComments(allComments);
     }
 
-    // const addReaction = (commentId, reaction, myName) => {
-    //     let allComments = storage.addNewComment(myName, myComment);
-    //     setComments(allComments);
-    // };
+    const addReaction = (commentId, reaction) => {
+        let allComments = storage.addReaction(commentId, reaction, myName);
+        setComments(allComments);
+    };
 
     // useEffect(() => {
 
@@ -36,7 +36,13 @@ export default function App(props) {
 
     return <React.Fragment>
         <Box my={3}>
-            {comments.map((comment, key) => <Comment comment={comment} key={`comment_${key}`} canDelete={comment.name === myName} deleteComment={deleteComment} />)}
+            {comments.map((comment, key) => <Comment 
+                comment={comment} 
+                key={`comment_${key}`} 
+                deleteComment={deleteComment} 
+                addReaction={addReaction}
+                myName={myName}
+            />)}
         </Box>
         <Box my={3}>
             <TextField

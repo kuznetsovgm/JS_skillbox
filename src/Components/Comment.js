@@ -10,6 +10,7 @@ import { ThumbUp as ThumbUpIcon, ThumbDown as ThumbDownIcon, Delete as DeleteIco
 const useStyles = makeStyles({
     root: {
       minWidth: 275,
+      marginBottom: 10
     },
     actions: {
         display: "flex",
@@ -23,7 +24,7 @@ const formatDate = timestamp => new Date(timestamp).toLocaleString();
 
 export default function Comment(props) {
     const classes = useStyles();
-    const { comment } = props;
+    const { comment, myName } = props;
 
     return (
         <Card className={classes.root} variant={"outlined"}>
@@ -40,13 +41,15 @@ export default function Comment(props) {
                 </Typography>
             </CardContent>
             <CardActions className={classes.actions}>
-                {/* <IconButton aria-label="down">
-                    <ThumbDownIcon />
+                <IconButton aria-label="down" onClick={() => props.addReaction(comment.id, 'down')} disabled={!myName || comment.name === myName} >
+                    <ThumbDownIcon color={comment.reactions.down.includes(myName) ? 'primary' : 'inherit'} />
                 </IconButton>
-                <IconButton aria-label="up">
-                    <ThumbUpIcon />
-                </IconButton> */}
-                {!!props.canDelete && <IconButton aria-label="delete" className={classes.delete} onClick={() => props.deleteComment(comment.id)}>
+                &nbsp;({comment.reactions.down.length})
+                <IconButton aria-label="up" onClick={() => props.addReaction(comment.id, 'up')} disabled={!myName || comment.name === myName} >
+                    <ThumbUpIcon color={comment.reactions.up.includes(myName) ? 'primary' : 'inherit'} />
+                </IconButton>
+                &nbsp;({comment.reactions.up.length})
+                {comment.name === myName && <IconButton aria-label="delete" className={classes.delete} onClick={() => props.deleteComment(comment.id)}>
                     <DeleteIcon />
                 </IconButton>}
             </CardActions>
