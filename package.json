@@ -17,7 +17,8 @@
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
-    "eject": "react-scripts eject"
+    "eject": "react-scripts eject",
+    "serve": "sudo pm2 start 'http-server ./build -d false -p 80' --name skillbox"
   },
   "eslintConfig": {
     "extends": [
