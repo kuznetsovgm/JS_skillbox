@@ -7,13 +7,17 @@ import CommentsStorage from './Components/CommentsStorage';
 
 const storage = new CommentsStorage();
 
+const filterHtml = (text) => {
+    return text.replace(/(<([^>]+)>)/gm, '');
+}
+
 export default function App(props) {
     const [comments, setComments] = React.useState(storage.comments);
     const [myComment, setMyComment] = React.useState('');
     const [myName, setMyName] = React.useState('');
 
     const sendComment = () => {
-        let allComments = storage.addNewComment(myName, myComment);
+        let allComments = storage.addNewComment(myName, filterHtml(myComment));
         setComments(allComments);
         setMyComment('');
     }
