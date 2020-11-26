@@ -1,15 +1,17 @@
 export default function rootReducer(state, action) {
     if (action.type === 'INCREMENT') {
-        return Object.assign({}, state, ++state.counter);
+        return {...state, counter: ++state.counter};
     }
     if (action.type === 'DECREMENT') {
-        return Object.assign({}, state, --state.counter);
+        return {...state, counter: --state.counter};
     }
     if (action.type === 'ASYNC') {
-        return ;
+        return async () => await setTimeout(() => {
+            dispa
+        }, 1000)
     }
     if (action.type === 'THEME') {
-        return ;
+        return state;
     }
 
     return state;

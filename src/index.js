@@ -1,5 +1,5 @@
-import createStore from './createStore';
-import rootReducer from './redux/rootReducer';
+// import createStore from './createStore';
+import configureStore from './redux/configureStore';
 import './styles.css';
 
 const counter = document.getElementById('counter');
@@ -8,9 +8,7 @@ const subBtn = document.getElementById('sub');
 const asyncBtn = document.getElementById('async');
 const themeBtn = document.getElementById('theme');
 
-const store = createStore(rootReducer, {
-    counter: 0,
-});
+const store = configureStore({counter: 0});
 
 window.store = store;
 
@@ -32,7 +30,6 @@ themeBtn.addEventListener('click', () => {
 
 store.subscribe(() => {
     const state = store.getState();
-    console.log(state);
     counter.innerText = state.counter;
 })
 
