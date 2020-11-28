@@ -11,9 +11,7 @@ const asyncBtn = document.getElementById('async');
 const themeBtn = document.getElementById('theme');
 const body = document.body;
 
-const store = configureStore({counter: 14, theme: 'dark'});
-
-window.store = store;
+const store = configureStore({counter: 14, theme: {theme: 'dark'}});
 
 addBtn.addEventListener('click', () => {
     store.dispatch(increment());
@@ -35,7 +33,9 @@ themeBtn.addEventListener('click', () => {
 store.subscribe(() => {
     const state = store.getState();
     counter.innerText = state.counter;
-    body.className = state.theme;
+    body.className = state.theme.theme;
+
+    [addBtn, subBtn, asyncBtn, themeBtn].forEach(btn => btn.disabled = state.theme.lock)
 })
 
 store.dispatch({type: 'INIT_APP'});

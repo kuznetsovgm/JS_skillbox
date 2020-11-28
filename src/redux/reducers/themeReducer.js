@@ -1,8 +1,19 @@
-import { THEME } from '../types';
+import { THEME, LOCK, UNLOCK } from '../types';
 
-export default function themeReducer(state = 'light', action) {
+const initialState = {
+    theme: 'light',
+    lock: false,
+}
+
+export default function themeReducer(state = initialState, action) {
     if (action.type === THEME) {
-        return state = action.payload;
+        return state = {...state, theme: action.payload};
+    }
+    if (action.type === LOCK) {
+        return {...state, lock: true};
+    }
+    if (action.type === UNLOCK) {
+        return {...state, lock: false};
     }
 
     return state;
