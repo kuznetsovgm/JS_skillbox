@@ -1,4 +1,5 @@
 import React from 'react';
+import { connect } from 'react-redux';
 import TextField from '@material-ui/core/TextField';
 import Button from '@material-ui/core/Button';
 import Box from '@material-ui/core/Box';
@@ -11,8 +12,8 @@ const filterHtml = (text) => {
     return text.replace(/(<([^>]+)>)/gm, '');
 }
 
-export default function App(props) {
-    const [comments, setComments] = React.useState(storage.comments);
+function App(props) {
+    const [comments, setComments] = React.useState(props.comments);
     const [myComment, setMyComment] = React.useState('');
     const [myName, setMyName] = React.useState('');
 
@@ -75,3 +76,12 @@ export default function App(props) {
 
     </React.Fragment>
 }
+
+const mapStateToProps = state => {
+    console.log(state)
+    return {
+        comments: state.comment.comments
+    }
+}
+
+export default connect(mapStateToProps)(App);
