@@ -6,6 +6,7 @@ import CardContent from '@material-ui/core/CardContent';
 import Typography from '@material-ui/core/Typography';
 import IconButton from '@material-ui/core/IconButton';
 import { ThumbUp as ThumbUpIcon, ThumbDown as ThumbDownIcon, Delete as DeleteIcon } from '@material-ui/icons';
+import { connect } from 'react-redux';
 
 const useStyles = makeStyles({
     root: {
@@ -22,7 +23,7 @@ const useStyles = makeStyles({
 
 const formatDate = timestamp => new Date(timestamp).toLocaleString();
 
-export default function Comment(props) {
+function Comment(props) {
     const classes = useStyles();
     const { comment, myName } = props;
 
@@ -56,3 +57,17 @@ export default function Comment(props) {
         </Card>
     )
 }
+
+const mapDispatchToProps = () => {
+    return {
+        
+    }
+}
+
+const mapStateToProps = () => {
+    return {
+        
+    }
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(Comment);

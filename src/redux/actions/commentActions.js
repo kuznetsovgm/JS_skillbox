@@ -1,5 +1,25 @@
-import { ADD_COMMENT } from '../types';
+import { ADD_COMMENT, SAVE } from '../types';
 
-export function addComemnt() {
-    return {type: ADD_COMMENT};
+export function addComment(name, comment) {
+    return dispatch => {
+        dispatch({
+            type: ADD_COMMENT,
+            payload: {
+                name,
+                comment
+            }
+        });
+    };
 }
+
+export function save() {
+    const storage = window.localStorage;
+    const storageKey = "comments";
+    
+    return dispatch => {
+        storage.setItem(storageKey, JSON.stringify(dispatch('GET_STATE').comments));
+
+    }
+
+}
+

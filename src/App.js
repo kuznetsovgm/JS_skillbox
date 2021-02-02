@@ -5,6 +5,7 @@ import Button from '@material-ui/core/Button';
 import Box from '@material-ui/core/Box';
 import Comment from './Components/Comment';
 import CommentsStorage from './Components/CommentsStorage';
+import { addComment } from './redux/actions/commentActions';
 
 const storage = new CommentsStorage();
 
@@ -13,13 +14,24 @@ const filterHtml = (text) => {
 }
 
 function App(props) {
-    const [comments, setComments] = React.useState(props.comments);
+    const state = props.comments;
+    console.log(state);
+    const [comments, setComments] = React.useState(state.comments.comments);
     const [myComment, setMyComment] = React.useState('');
     const [myName, setMyName] = React.useState('');
 
+    console.log(state);
+    // props.comments.subscribe(() => {
+    //     const state = props.comments.getState();
+
+    //     setComments(state.comments);
+    // })
+
     const sendComment = () => {
-        let allComments = storage.addNewComment(myName, filterHtml(myComment));
-        setComments(allComments);
+        addComment(myName, filterHtml(myComment));
+
+        // let allComments = storage.addNewComment(myName, filterHtml(myComment));
+        // setComments(allComments);
         setMyComment('');
     }
 
@@ -80,8 +92,14 @@ function App(props) {
 const mapStateToProps = state => {
     console.log(state)
     return {
-        comments: state.comment.comments
+        comments: state.comment
+    }
+}
+const mapDispatchToProps = dispatch => {
+    console.log(dispatch)
+    return {
+        addComment: (name, comment) => dispatch(addComment(name, comment))
     }
 }
 
-export default connect(mapStateToProps)(App);
+export default connect(mapStateToProps, mapDispatchToProps)(App);
