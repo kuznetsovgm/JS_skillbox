@@ -36,12 +36,13 @@ function App(props) {
     // })
 
     const sendComment = () => {
-        props.addComment(myName, filterHtml(myComment));
+        const comment = new Comment(myName, myComment, comments.length);
+        props.addComment(comment);
         // addComment(myName, filterHtml(myComment));
 
         // let allComments = storage.addNewComment(myName, filterHtml(myComment));
         // setComments(allComments);
-        // setMyComment('');
+        setMyComment('');
     }
 
     const deleteComment = (commentId) => {
@@ -101,7 +102,7 @@ function App(props) {
 const mapStateToProps = state => {
     console.log(state)
     return {
-        comments: state.comment,
+        comments: state.comments,
         user: state.user,
     }
 }

@@ -9,6 +9,8 @@ export default class Storage {
     }
 
     get(code) {
-        return JSON.parse(this.storage.getItem(code) || null);
+        const value = this.storage.getItem(code);
+        console.log(value);
+        return !!value ? JSON.parse(value) : null;
     }
 }

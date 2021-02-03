@@ -6,3 +6,5 @@ export const LOAD_COMMENTS = 'LOAD_COMMENTS';
 export const ADD_COMMENT = 'ADD_COMMENT';
 export const SAVE = 'SAVE';
 
+export const LOAD_USER = 'LOAD_USER';
+
