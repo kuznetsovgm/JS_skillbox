@@ -1,14 +1,18 @@
+import Storage from '../api/Storage';
+
+const comments = 'comments';
+const user = 'user';
+
 export default class CommentStorage {
     constructor() {
         this._comments = [];
         this.reactions = ['up', 'down'];
-        this.commentsItem = "comments";
-        this.storage = window.localStorage;
-        this.downloadComments();
+        this.storage = new Storage();
+        // this.downloadComments();
     }
 
     downloadComments = () => {
-        this._comments = JSON.parse(this.storage.getItem(this.commentsItem) || "[]");
+        return this._comments = JSON.parse(this.storage.getItem(this.storageKey) || "[]");
     }
 
     get comments() {
@@ -55,8 +59,8 @@ export default class CommentStorage {
         return this.comments;
     }
 
-    save() {
-        this.storage.setItem(this.commentsItem, JSON.stringify(this.comments));
+    save(comments) {
+        this.storage.setItem(this.storageKey, JSON.stringify(comments));
     }
 
     getComment(id) {

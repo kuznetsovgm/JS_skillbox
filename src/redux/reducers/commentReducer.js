@@ -1,17 +1,18 @@
-import { ADD_COMMENT, SAVE } from '../types';
+import { ADD_COMMENT, INIT_APP, SAVE, LOAD_COMMENTS } from '../types';
 
-const initialState = {
-    comments: {comments: JSON.parse(window.localStorage.getItem("comments") || "[]")}
-};
+// const initialState = {
+//     comments: [],
+// };
 
-export const commentReducer = (state = initialState, action) => {
+export const commentReducer = (state = [], action) => {
     switch (action.type) {
         case ADD_COMMENT: 
-            state = {...(state.comments.push({...action.comment}))};
-            return state;
-        case SAVE: 
-            state = {...(state.comments.push({...action.comment}))};
-            return state;
+            return state.push({...action.newComment});
+        // case SAVE: 
+            // state = {...(state.comments.push({...action.comment}))};
+            // return state;
+        case LOAD_COMMENTS: 
+            return action.comments;
 
         default: return state;
     }
