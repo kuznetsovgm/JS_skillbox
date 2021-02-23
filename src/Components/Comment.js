@@ -28,8 +28,6 @@ function Comment(props) {
     const classes = useStyles();
     const { comment, userName } = props;
 
-    console.log('render comment ', comment.id);
-
     return (
         <Card className={classes.root} variant={"outlined"}>
             <CardContent>
