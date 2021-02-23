@@ -4,75 +4,41 @@ import TextField from '@material-ui/core/TextField';
 import Button from '@material-ui/core/Button';
 import Box from '@material-ui/core/Box';
 import Comment from './Components/Comment';
-import CommentsStorage from './Components/CommentsStorage';
-import { addComment, saveComments, loadComments } from './redux/actions/commentActions';
+import { addComment, saveComments, init } from './redux/actions/commentActions';
+import { loadUser, setUser } from './redux/actions/userActions';
 
-const storage = new CommentsStorage();
 
 const filterHtml = (text) => {
     return text.replace(/(<([^>]+)>)/gm, '');
 }
 
 function App(props) {
-    const {comments, user} = props;
-    // console.log(state);
-    // const [comments, setComments] = React.useState(state.comments.comments);
+    const {comments, userName} = props;
     const [myComment, setMyComment] = React.useState('');
-    const [myName, setMyName] = React.useState('');
 
     useEffect(() => {
-        props.loadComments();
-        window.addEventListener('beforeunload', props.save());
-        return () => {
-            window.removeEventListener('beforeunload', props.save());
-        }
+        props.initComments();
+        props.loadUser();
     }, []);
 
-    // console.log(state);
-    // props.comments.subscribe(() => {
-    //     const state = props.comments.getState();
-
-    //     setComments(state.comments);
-    // })
-
     const sendComment = () => {
-        const comment = new Comment(myName, myComment, comments.length);
-        props.addComment(comment);
-        // addComment(myName, filterHtml(myComment));
-
-        // let allComments = storage.addNewComment(myName, filterHtml(myComment));
-        // setComments(allComments);
+        props.addComment(userName, filterHtml(myComment));
         setMyComment('');
     }
-
-    const deleteComment = (commentId) => {
-        // let comment = comments.find(comment => comment.id === commentId);
-        // if (comment.name !== myName) return false;
-        // let allComments = storage.deleteComment(commentId);
-        // setComments(allComments);
-    }
-
-    const addReaction = (commentId, reaction) => {
-        // let allComments = storage.addReaction(commentId, reaction, myName);
-        // setComments(allComments);
-    };
 
     return <React.Fragment>
         <Box my={3}>
             {comments.map((comment, key) => <Comment 
                 comment={comment} 
                 key={`comment_${key}`} 
-                deleteComment={deleteComment} 
-                addReaction={addReaction}
-                myName={myName}
             />)}
         </Box>
         <Box my={3}>
             <TextField
                 label="Ваше имя"
                 variant="outlined"
-                value={myName}
-                onChange={e => setMyName(e.target.value)}
+                value={userName}
+                onChange={e => props.setUserName(e.target.value)}
             />
         </Box>
 
@@ -90,7 +56,7 @@ function App(props) {
             <Button 
                 variant={'outlined'}
                 onClick={sendComment}
-                disabled={!myName || !myComment}
+                disabled={!userName || !myComment}
             >
                 Опубликовать
             </Button>
@@ -100,18 +66,18 @@ function App(props) {
 }
 
 const mapStateToProps = state => {
-    console.log(state)
     return {
         comments: state.comments,
-        user: state.user,
+        userName: state.user,
     }
 }
 const mapDispatchToProps = dispatch => {
-    console.log(dispatch)
     return {
+        initComments: () => dispatch(init()),
         addComment: (name, comment) => dispatch(addComment(name, comment)),
-        loadComments: () => dispatch(loadComments()),
         save: () => dispatch(saveComments()),
+        loadUser: () => dispatch(loadUser()),
+        setUserName: (userName) => dispatch(setUser(userName)),
     }
 }
 

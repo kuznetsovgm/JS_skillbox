@@ -1,16 +1,11 @@
-import { LOAD_USER } from '../types';
+import { LOAD_USER, SET_USER } from '../types';
 
-// const initialState = {
-//     comments: [],
-// };
-
-export const userReducer = (state = [], action) => {
+export const userReducer = (state = "", action) => {
     switch (action.type) {
         case LOAD_USER: 
-            return {...action.user};
-        // case SAVE: 
-            // state = {...(state.comments.push({...action.comment}))};
-            // return state;
+            return action.user;
+        case SET_USER: 
+            return action.userName;
 
         default: return state;
     }

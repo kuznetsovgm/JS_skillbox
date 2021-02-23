@@ -1,6 +1,5 @@
 export default class Storage {
     constructor() {
-        // this.storageKey = "comments";
         this.storage = window.localStorage;
     }
 
@@ -10,7 +9,6 @@ export default class Storage {
 
     get(code) {
         const value = this.storage.getItem(code);
-        console.log(value);
         return !!value ? JSON.parse(value) : null;
     }
 }

@@ -7,6 +7,7 @@ import Typography from '@material-ui/core/Typography';
 import IconButton from '@material-ui/core/IconButton';
 import { ThumbUp as ThumbUpIcon, ThumbDown as ThumbDownIcon, Delete as DeleteIcon } from '@material-ui/icons';
 import { connect } from 'react-redux';
+import { deleteComment, addReaction } from '../redux/actions/commentActions';
 
 const useStyles = makeStyles({
     root: {
@@ -25,7 +26,9 @@ const formatDate = timestamp => new Date(timestamp).toLocaleString();
 
 function Comment(props) {
     const classes = useStyles();
-    const { comment, myName } = props;
+    const { comment, userName } = props;
+
+    console.log('render comment ', comment.id);
 
     return (
         <Card className={classes.root} variant={"outlined"}>
@@ -42,15 +45,15 @@ function Comment(props) {
                 </Typography>
             </CardContent>
             <CardActions className={classes.actions}>
-                <IconButton aria-label="down" onClick={() => props.addReaction(comment.id, 'down')} disabled={!myName || comment.name === myName} >
-                    <ThumbDownIcon color={comment.reactions.down.includes(myName) ? 'primary' : 'inherit'} />
+                <IconButton aria-label="down" onClick={() => props.addReaction(comment.id, 'down', userName)} disabled={!userName || comment.name === userName} >
+                    <ThumbDownIcon color={comment.reactions.down.includes(userName) ? 'primary' : 'inherit'} />
                 </IconButton>
                 &nbsp;({comment.reactions.down.length})
-                <IconButton aria-label="up" onClick={() => props.addReaction(comment.id, 'up')} disabled={!myName || comment.name === myName} >
-                    <ThumbUpIcon color={comment.reactions.up.includes(myName) ? 'primary' : 'inherit'} />
+                <IconButton aria-label="up" onClick={() => props.addReaction(comment.id, 'up', userName)} disabled={!userName || comment.name === userName} >
+                    <ThumbUpIcon color={comment.reactions.up.includes(userName) ? 'primary' : 'inherit'} />
                 </IconButton>
                 &nbsp;({comment.reactions.up.length})
-                {comment.name === myName && <IconButton aria-label="delete" className={classes.delete} onClick={() => props.deleteComment(comment.id)}>
+                {comment.name === userName && <IconButton aria-label="delete" className={classes.delete} onClick={() => props.deleteComment(comment.id)}>
                     <DeleteIcon />
                 </IconButton>}
             </CardActions>
@@ -58,15 +61,16 @@ function Comment(props) {
     )
 }
 
-const mapDispatchToProps = () => {
+const mapDispatchToProps = (dispatch) => {
     return {
-        
+        addReaction: (commentId, reaction, userName) => dispatch(addReaction(commentId, reaction, userName)),
+        deleteComment: (id) => dispatch(deleteComment(id)),
     }
 }
 
-const mapStateToProps = () => {
+const mapStateToProps = (state) => {
     return {
-        
+        userName: state.user,
     }
 }
 

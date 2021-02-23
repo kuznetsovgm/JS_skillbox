@@ -1,19 +1,13 @@
-import { ADD_COMMENT, INIT_APP, SAVE, LOAD_COMMENTS } from '../types';
-
-// const initialState = {
-//     comments: [],
-// };
+import { ADD_COMMENT, INIT_APP, SAVE, SET_COMMENTS } from '../types';
 
 export const commentReducer = (state = [], action) => {
+    console.log(action);
     switch (action.type) {
         case ADD_COMMENT: 
             state.push({...action.newComment});
             return state;
-        // case SAVE: 
-            // state = {...(state.comments.push({...action.comment}))};
-            // return state;
-        case LOAD_COMMENTS: 
-            return action.comments;
+        case SET_COMMENTS:
+            return action.comments.slice();
 
         default: return state;
     }
